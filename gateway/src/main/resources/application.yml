@@ -1,0 +1,24 @@
+server:
+  port: 8002
+spring:
+  application:
+    name: cloud-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          route-id-prefix: /api
+          enabled: true
+          lower-case-service-id: true
+      default-filters:
+        - AddResponseHeader=X-Response-Default-Foo, Default-Bar
+        - PrefixPath=/httpbin
+        - BaseHttpFitter
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8001/eureka
+    registry-fetch-interval-seconds: 5
+    fetch-registry: false
