@@ -28,19 +28,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
     private RedisConnectionFactory redisConnectionFactory;
-
+    /**
+     * 声明Auth管理器
+     * @return  当前使用的Auth管理器
+     * @throws Exception 无法自动创建时抛出
+     */
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
+    /**
+     * 声明加密方式
+     * @return 加密器
+     */
     @Bean  //password加密的方式 相当于把PasswordEncoder类对象 注册到容器中
     PasswordEncoder passwordEncoder() {
         // 加密方式
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder;
     }
-
+    /**
+     * 声明 TokenService服务
+     * 用于载入token认证相关的服务
+     * @return TokenService服务
+     */
     @Bean
     public DefaultTokenServices tokenServices() {
         DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
@@ -49,6 +60,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         return defaultTokenServices;
     }
+    /**
+     * token存储方式,使用Redis方式，需要在配置文件中声明Redis配置且需要与Resources服务共用Redis
+     * @return Redis存储
+     */
     @Bean
     public RedisTokenStore tokenStore() {
         return new RedisTokenStore(redisConnectionFactory);
@@ -68,7 +83,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-    // 设置添加用户信息,正常应该从数据库中读取
+    /**
+     * 设置添加用户信息,正常应该从数据库中读取
+     * @return 用户管理服务，用于回调和装载用户Oauth
+     */
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailService();

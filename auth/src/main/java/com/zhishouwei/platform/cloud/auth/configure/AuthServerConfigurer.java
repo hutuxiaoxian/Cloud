@@ -71,7 +71,13 @@ public class AuthServerConfigurer extends AuthorizationServerConfigurerAdapter {
                         endpoints.getOAuth2RequestFactory() ) // 拦截sms_code方式
         ))));
     }
-
+    /**
+     * 生成装饰器，用于处理sms_code和openid方式认证
+     * @param grantType 认证方式：sms_code,openid
+     * @param detailsService    客户端服务
+     * @param factory   oauth2工厂
+     * @return  装饰器
+     */
     private MyTokenGranter tokenGranter(String grantType, ClientDetailsService detailsService, OAuth2RequestFactory factory) {
         return new MyTokenGranter(
                 tokenServices,

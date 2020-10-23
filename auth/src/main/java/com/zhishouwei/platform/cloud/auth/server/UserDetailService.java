@@ -24,13 +24,14 @@ public class UserDetailService implements UserDetailsService {
         String errMsg = "账号不存在或密码不正确";
         if (s.contains(SEPARATE)) {
             String[] arr = s.split(SEPARATE);
-            if (arr.length == 2 && StringUtils.isMobile(arr[0])) {
+            final int length = 2;
+            if (arr.length == length && StringUtils.isMobile(arr[0])) {
                 userDetails = userService.findUserByMobileAndCode(arr[0], arr[1]);
                 return userDetailsByAuthUser(userDetails);
             }
             errMsg = "手机号或验证码不存在";
-        } else if (s.startsWith("openid"+SEPARATE)) {
-            s = s.replace("openid"+SEPARATE, "");
+        } else if (s.startsWith("openid" + SEPARATE)) {
+            s = s.replace("openid" + SEPARATE, "");
             if (StringUtils.isOpenID(s)) {
                 userDetails = userService.findUserByOpenId(s);
                 errMsg = "第三方OpenId不存在";
@@ -49,6 +50,11 @@ public class UserDetailService implements UserDetailsService {
         return userDetailsByAuthUser(userDetails);
     }
 
+    /**
+     * 查询到的AuthUser数据装载到UserDetails
+     * @param authUser 查询到的AuthUser数据
+     * @return UserDetails
+     */
     private UserDetails userDetailsByAuthUser(AuthUser authUser) {
         User.UserBuilder builder =  AuthUser.builder()
                 .username(authUser.getUsername())
