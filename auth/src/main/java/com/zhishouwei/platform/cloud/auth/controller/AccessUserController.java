@@ -16,12 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("uaa")
 public class AccessUserController {
-
-    @Value("${auth.clientId}")
-    private String user;
-    @Value("${auth.password}")
-    private String passwd;
-
+    
     private static final int RESPCODE_SECCESS = 200;
     private static final int RESPCODE_ERROR_DETAILS = 400;
     private static final int RESPCODE_ERROR_CLIENTIDLENGTH = 401;

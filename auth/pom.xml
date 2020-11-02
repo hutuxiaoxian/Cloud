@@ -9,9 +9,10 @@
         <version>2.3.4.RELEASE</version>
     </parent>
 
+    <groupId>com.zhishouwei.platform.cloud</groupId>
 	<artifactId>auth</artifactId>
-    <packaging>jar</packaging>
-    <version>1.0</version>
+    <name>auth</name>
+    <version>1.0.0</version>
 
 	<properties>
         <spring-cloud.version>Hoxton.SR8</spring-cloud.version>

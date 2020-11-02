@@ -6,9 +6,6 @@ auth:
   password: hutuxiaoxian
 security:
   oauth2:
-#    resource:
-#      service-id: hutu-oauth2-resource
-#      token-type: redis
     client:
       access-token-validity-seconds: 1296000
       refresh-token-validity-seconds: 1296000
@@ -21,7 +18,7 @@ security:
       token-key-access: permitAll()
 authserver:
   contextPath: /account
-  load-service: mall
+  load-service: bj-basicdata
 
 server:
   port: 9300
