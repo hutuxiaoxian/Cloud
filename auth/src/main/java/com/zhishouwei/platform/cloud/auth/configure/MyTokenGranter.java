@@ -22,6 +22,9 @@ public class MyTokenGranter extends AbstractTokenGranter {
     public enum GrantType {
         SMS_CODE("sms_code"),
         OPENID("openid"),
+        WEIBO("weibo"),
+        WECHAT("wechat"),
+        QQ("qq"),
         PASSWORD("password");
         private String code;
         private GrantType(String code) {

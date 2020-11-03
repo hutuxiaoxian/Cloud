@@ -2,6 +2,8 @@ package com.zhishouwei.platform.cloud.auth.server;
 
 import com.zhishouwei.common.model.AuthUser;
 import com.zhishouwei.common.utils.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 
 @Service("userDetailService")
 public class UserDetailService implements UserDetailsService {
@@ -56,18 +59,33 @@ public class UserDetailService implements UserDetailsService {
      * @return UserDetails
      */
     private UserDetails userDetailsByAuthUser(AuthUser authUser) {
+
         User.UserBuilder builder =  AuthUser.builder()
                 .username(authUser.getUsername())
                 .password(authUser.getPassword())
                 .accountExpired(!authUser.isAccountNonExpired())
                 .credentialsExpired(!authUser.isCredentialsNonExpired())
                 .accountLocked(!authUser.isAccountNonLocked())
-                .disabled(!authUser.isEnabled())
-                .authorities(authUser.getResources());
-        if (authUser.getResources() == null && authUser.getResources().length == 0) {
-            builder.roles(authUser.getRoles());
+                .disabled(!authUser.isEnabled());
+        String[] authority = null;
+        if (ArrayUtils.isNotEmpty(authUser.getResources()) && ArrayUtils.isNotEmpty(authUser.getRoles())) {
+            authority = initRolesAndResources(authUser.getRoles(), authUser.getResources());
+        } else if (ArrayUtils.isNotEmpty(authUser.getResources())) {
+            authority = authUser.getResources();
+        } else if (ArrayUtils.isNotEmpty(authUser.getRoles())) {
+            authority = authUser.getRoles();
+        }
+        if (ArrayUtils.isEmpty(authority)) {
+            builder.authorities(authority);
         }
         return builder.build();
+    }
+
+    private String[] initRolesAndResources(String[] roles, String[] resources) {
+        for (String item : roles) {
+            item = "ROLE_" + item;
+        }
+        return ArrayUtils.addAll(roles, resources);
     }
 
 }

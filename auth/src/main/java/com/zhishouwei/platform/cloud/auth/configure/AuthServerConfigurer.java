@@ -63,6 +63,15 @@ public class AuthServerConfigurer extends AuthorizationServerConfigurerAdapter {
 
         endpoints.tokenGranter((new CompositeTokenGranter(Arrays.asList(
                 endpoints.getTokenGranter(),
+                tokenGranter(MyTokenGranter.GrantType.WECHAT.getCode()
+                        ,endpoints.getClientDetailsService(),
+                        endpoints.getOAuth2RequestFactory() ),
+                tokenGranter(MyTokenGranter.GrantType.QQ.getCode()
+                        ,endpoints.getClientDetailsService(),
+                        endpoints.getOAuth2RequestFactory() ),
+                tokenGranter(MyTokenGranter.GrantType.WEIBO.getCode()
+                        ,endpoints.getClientDetailsService(),
+                        endpoints.getOAuth2RequestFactory() ),
                 tokenGranter(MyTokenGranter.GrantType.OPENID.getCode()
                         ,endpoints.getClientDetailsService(),
                         endpoints.getOAuth2RequestFactory() ), // 拦截openid方式
