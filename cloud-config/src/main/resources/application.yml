@@ -1,0 +1,44 @@
+server:
+  port: 22001    # ⚠️ 端口变更：8888 → 22001
+
+spring:
+  application:
+    name: cloud-config
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/hutuxiaoxian/Cloud-config-repo.git
+          search-paths: '{application},dev'
+          default-label: main
+          username: ${GIT_USERNAME:hutuxiaoxian_GitHub}
+          password: ${GIT_PASSWORD:ycHYnNoFCHEzBpqE21tWb9Ghxe4cLxw6O2d+FKW9aTQ}
+          timeout: 10
+          force-pull: true
+
+    bus:
+      enabled: true
+      refresh:
+        enabled: true
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+# ⚠️ 端口变更：Eureka 地址更新为 22002
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:22002/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,bus-refresh,refresh,env
+  endpoint:
+    bus-refresh:
+      enabled: true

@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: cloud-auth
+  config:
+    import: "configserver:http://localhost:22001/"    # ⚠️ 端口变更：8888 → 22001
+  cloud:
+    config:
+      fail-fast: true
+      retry:
+        max-attempts: 6
+        initial-interval: 1000
+  main:
+#    web-application-type: servlet
+    allow-bean-definition-overriding: true
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.boot.autoconfigure.security: DEBUG
+server:
+  error:
+    include-exception: true
+    include-stacktrace: always
+    include-message: always

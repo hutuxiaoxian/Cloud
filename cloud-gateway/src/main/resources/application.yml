@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: cloud-gateway
+  config:
+    import: optional:configserver:http://localhost:22001/    # ⚠️ 端口变更：8888 → 22001
+  cloud:
+    config:
+      fail-fast: true
+      retry:
+        max-attempts: 6
+        initial-interval: 1000
+  main:
+    allow-bean-definition-overriding: true
+    web-application-type: reactive
